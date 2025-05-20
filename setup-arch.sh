@@ -13,4 +13,4 @@ git clone "$REPO_URL" "$WORKDIR"
 
 echo "[*] Ejecutando playbook de Ansible..."
 cd "$WORKDIR"
-ansible-playbook setup_arch.yml
+LC_ALL=C sudo ansible-playbook setup_arch.yml
