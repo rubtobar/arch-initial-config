@@ -5,7 +5,7 @@ REPO_URL="git@github.com:rubtobar/arch-initial-config.git"
 WORKDIR="/tmp/arch-ansible"
 
 echo "[*] Instalando dependencias (git, ansible)..."
-pacman -Sy --noconfirm git ansible
+pacman -Sy --noconfirm git ansible sudo
 
 echo "[*] Clonando repositorio desde $REPO_URL"
 rm -rf "$WORKDIR"
