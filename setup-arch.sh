@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO_URL="git@github.com:rubtobar/arch-initial-config.git"
+REPO_URL="https://github.com/rubtobar/arch-initial-config.git"
 WORKDIR="/tmp/arch-ansible"
 
 echo "[*] Instalando dependencias (git, ansible, sudo)..."
