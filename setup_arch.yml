@@ -1,0 +1,39 @@
+---
+- name: Configurar Arch Linux recién instalado
+  hosts: localhost
+  connection: local
+  become: true
+
+  vars_prompt:
+    - name: new_username
+      prompt: "Introduce el nombre del nuevo usuario"
+      private: no
+
+  tasks:
+    - name: Instalar sudo
+      pacman:
+        name: sudo
+        state: present
+        update_cache: yes
+
+    - name: Asegurar que el grupo wheel existe
+      group:
+        name: wheel
+        state: present
+
+    - name: Crear el usuario con grupo wheel
+      user:
+        name: "{{ new_username }}"
+        groups: wheel
+        append: yes
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Permitir sudo sin contraseña para grupo wheel
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^# %wheel ALL=\(ALL:ALL\) NOPASSWD: ALL'
+        line: '%wheel ALL=(ALL:ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
