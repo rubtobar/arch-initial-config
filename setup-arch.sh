@@ -14,9 +14,11 @@ git clone "$REPO_URL" "$WORKDIR"
 
 echo "[*] Configurando locales"
 sed -i "s/^#\s*$LOCALE UTF-8/$LOCALE UTF-8/" /etc/locale.gen
-echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+echo "LANG=${LOCALE}" > /etc/locale.conf
 locale-gen
 
 echo "[*] Ejecutando playbook de Ansible..."
+export LANG=${LOCALE}
+export LC_ALL=${LOCALE}
 cd "$WORKDIR"
-LC_ALL=en_US.UTF-8 ansible-playbook setup_arch.yml
+ansible-playbook setup_arch.yml
