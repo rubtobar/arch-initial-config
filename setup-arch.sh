@@ -3,6 +3,7 @@ set -e
 
 REPO_URL="https://github.com/rubtobar/arch-initial-config.git"
 WORKDIR="/tmp/arch-ansible"
+LOCALE="en_US.UTF-8"
 
 echo "[*] Instalando dependencias (git, ansible, sudo)..."
 pacman -Sy --noconfirm git ansible sudo openssh
