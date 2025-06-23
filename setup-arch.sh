@@ -11,6 +11,10 @@ echo "[*] Clonando repositorio desde $REPO_URL"
 rm -rf "$WORKDIR"
 git clone "$REPO_URL" "$WORKDIR"
 
+echo "[*] Configurando locales"
+echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+locale-gen
+
 echo "[*] Ejecutando playbook de Ansible..."
 cd "$WORKDIR"
 LC_ALL=C sudo ansible-playbook setup_arch.yml
