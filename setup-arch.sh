@@ -5,7 +5,6 @@ REPO_URL="https://github.com/rubtobar/arch-initial-config.git"
 WORKDIR="/tmp/arch-ansible"
 LOCALE="en_US.UTF-8"
 
-# 🧑 Pedir nombre de usuario
 read -rp "Nuevo usuario: " NEW_USERNAME
 
 echo "[*] Instalando dependencias (git, ansible, sudo)..."
