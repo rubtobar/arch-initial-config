@@ -17,4 +17,4 @@ locale-gen
 
 echo "[*] Ejecutando playbook de Ansible..."
 cd "$WORKDIR"
-LC_ALL=en_US.UTF-8 sudo ansible-playbook setup_arch.yml
+LC_ALL=en_US.UTF-8 ansible-playbook setup_arch.yml
