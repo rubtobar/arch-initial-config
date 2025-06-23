@@ -5,6 +5,9 @@ REPO_URL="https://github.com/rubtobar/arch-initial-config.git"
 WORKDIR="/tmp/arch-ansible"
 LOCALE="en_US.UTF-8"
 
+# 🧑 Pedir nombre de usuario
+read -rp "Nuevo usuario: " NEW_USERNAME
+
 echo "[*] Instalando dependencias (git, ansible, sudo)..."
 pacman -Sy --noconfirm git ansible sudo openssh
 
@@ -21,4 +24,4 @@ echo "[*] Ejecutando playbook de Ansible..."
 export LANG=${LOCALE}
 export LC_ALL=${LOCALE}
 cd "$WORKDIR"
-ansible-playbook setup_arch.yml
+ansible-playbook setup_arch.yml --extra-vars "new_username=${NEW_USERNAME}"
