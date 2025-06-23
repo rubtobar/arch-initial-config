@@ -14,6 +14,7 @@ git clone "$REPO_URL" "$WORKDIR"
 echo "[*] Configurando locales"
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 locale-gen
+export LANG=en_US.UTF-8
 
 echo "[*] Ejecutando playbook de Ansible..."
 cd "$WORKDIR"
