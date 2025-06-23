@@ -12,6 +12,7 @@ rm -rf "$WORKDIR"
 git clone "$REPO_URL" "$WORKDIR"
 
 echo "[*] Configurando locales"
+sed -i "s/^#\s*$LOCALE UTF-8/$LOCALE UTF-8/" /etc/locale.gen
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 locale-gen
 
