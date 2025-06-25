@@ -5,7 +5,12 @@ REPO_URL="https://github.com/rubtobar/arch-initial-config.git"
 WORKDIR="/tmp/arch-ansible"
 LOCALE="en_US.UTF-8"
 
-read -rp "Nuevo usuario: " NEW_USERNAME
+if [ -z "$1" ]; then
+  echo "Uso: $0 nuevo_usuario"
+  exit 1
+fi
+
+NEW_USERNAME="$1"
 
 echo "[*] Instalando dependencias (git, ansible, sudo)..."
 pacman -Sy --noconfirm git ansible sudo openssh
