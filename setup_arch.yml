@@ -37,3 +37,45 @@
         line: '%wheel ALL=(ALL:ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
+    - name: Ensure Podman is installed
+      pacman:
+        name: podman
+        state: present
+
+
+    - name: Ensure support for rootless Podman
+      become: false
+      blockinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR PODMAN"
+        block: |
+          if [[ -z "$XDG_RUNTIME_DIR" ]]; then
+            export XDG_RUNTIME_DIR=/run/user/$UID
+            if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+              export XDG_RUNTIME_DIR=/tmp/$USER-runtime
+              if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+                mkdir -m 0700 "$XDG_RUNTIME_DIR"
+              fi
+            fi
+          fi
+
+    - name: Ensure containers.conf exists
+      copy:
+        src: /usr/share/containers/containers.conf
+        dest: /etc/containers/containers.conf
+        remote_src: true
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Configure cgroup_manager, events_logger and log_driver
+      lineinfile:
+        path: /etc/containers/containers.conf
+        regexp: '{{ item.regexp }}'
+        line: '{{ item.line }}'
+      loop:
+        - { regexp: '^cgroup_manager\s*=.*$', line: 'cgroup_manager = "cgroupfs"' }
+        - { regexp: '^events_logger\s*=.*$', line: 'events_logger = "file"' }
+        - { regexp: '^log_driver\s*=.*$', line: 'log_driver = "k8s-file"' }
+
+
