@@ -46,7 +46,7 @@
     - name: Ensure support for rootless Podman
       become: false
       blockinfile:
-        path: "{{ ansible_env.HOME }}/.bashrc"
+        path: "/home/{{ new_username }}/.bashrc"
         marker: "# {mark} ANSIBLE MANAGED BLOCK FOR PODMAN"
         block: |
           if [[ -z "$XDG_RUNTIME_DIR" ]]; then
