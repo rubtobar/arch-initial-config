@@ -102,5 +102,23 @@
         group: root
         mode: '0644'
 
+    - name: Comprobar si Oh My Bash ya está instalado
+      stat:
+        path: "/home/{{ new_username }}/.oh-my-bash"
+      register: ohmybash_dir
+      become: true
+      become_user: "{{ new_username }}"
+
+    - name: Instalar Oh My Bash si no está instalado
+      become: true
+      become_user: "{{ new_username }}"
+      shell: |
+        curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | bash
+      args:
+        executable: /bin/bash
+      environment:
+        HOME: "/home/{{ new_username }}"
+      when: not ohmybash_dir.stat.exists
+
 
 
