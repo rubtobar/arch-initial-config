@@ -17,6 +17,7 @@
           - neovim
           - htop
           - tree
+          - wget
         state: present
         update_cache: yes
 
