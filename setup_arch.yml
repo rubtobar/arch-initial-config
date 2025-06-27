@@ -10,11 +10,16 @@
       private: no
 
   tasks:
-    - name: Instalar sudo
+    - name: Instalar paquetes adicionales
       pacman:
-        name: sudo
+        name:
+          - base-devel
+          - neovim
+          - htop
+          - tree
         state: present
         update_cache: yes
+
 
     - name: Asegurar que el grupo wheel existe
       group:
