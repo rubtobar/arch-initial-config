@@ -78,4 +78,15 @@
         - { regexp: '^events_logger\s*=.*$', line: 'events_logger = "file"' }
         - { regexp: '^log_driver\s*=.*$', line: 'log_driver = "k8s-file"' }
 
+    - name: Establecer usuario predeterminado en WSL
+      copy:
+        dest: /etc/wsl.conf
+        content: |
+          [user]
+          default={{ new_username }}
+        owner: root
+        group: root
+        mode: '0644'
+
+
 
