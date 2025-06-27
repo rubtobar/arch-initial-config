@@ -44,28 +44,6 @@
         line: '%wheel ALL=(ALL:ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
-    - name: Ensure Podman is installed
-      pacman:
-        name: podman
-        state: present
-
-
-    - name: Ensure support for rootless Podman
-      become: false
-      blockinfile:
-        path: "/home/{{ new_username }}/.bashrc"
-        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR PODMAN"
-        block: |
-          if [[ -z "$XDG_RUNTIME_DIR" ]]; then
-            export XDG_RUNTIME_DIR=/run/user/$UID
-            if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
-              export XDG_RUNTIME_DIR=/tmp/$USER-runtime
-              if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
-                mkdir -m 0700 "$XDG_RUNTIME_DIR"
-              fi
-            fi
-          fi
-
     - name: Verificar si containers.conf ya existe
       stat:
         path: /etc/containers/containers.conf
@@ -119,6 +97,29 @@
       environment:
         HOME: "/home/{{ new_username }}"
       when: not ohmybash_dir.stat.exists
+
+
+    - name: Ensure Podman is installed
+      pacman:
+        name: podman
+        state: present
+
+
+    - name: Ensure support for rootless Podman
+      become: false
+      blockinfile:
+        path: "/home/{{ new_username }}/.bashrc"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR PODMAN"
+        block: |
+          if [[ -z "$XDG_RUNTIME_DIR" ]]; then
+            export XDG_RUNTIME_DIR=/run/user/$UID
+            if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+              export XDG_RUNTIME_DIR=/tmp/$USER-runtime
+              if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+                mkdir -m 0700 "$XDG_RUNTIME_DIR"
+              fi
+            fi
+          fi
 
 
 
