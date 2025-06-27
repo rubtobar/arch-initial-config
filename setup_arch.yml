@@ -59,7 +59,12 @@
             fi
           fi
 
-    - name: Ensure containers.conf exists
+    - name: Verificar si containers.conf ya existe
+      stat:
+        path: /etc/containers/containers.conf
+      register: containers_conf_stat
+
+    - name: Copiar containers.conf solo si no existe
       copy:
         src: /usr/share/containers/containers.conf
         dest: /etc/containers/containers.conf
@@ -67,6 +72,8 @@
         owner: root
         group: root
         mode: '0644'
+      when: not containers_conf_stat.stat.exists
+
 
     - name: Configure cgroup_manager, events_logger and log_driver
       lineinfile:
