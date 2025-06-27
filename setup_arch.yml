@@ -18,6 +18,7 @@
           - htop
           - tree
           - wget
+          - uv
         state: present
         update_cache: yes
 
