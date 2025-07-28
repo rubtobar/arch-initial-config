@@ -19,6 +19,7 @@
           - tree
           - wget
           - uv
+          - podman
         state: present
         update_cache: yes
 
@@ -97,13 +98,6 @@
       environment:
         HOME: "/home/{{ new_username }}"
       when: not ohmybash_dir.stat.exists
-
-
-    - name: Ensure Podman is installed
-      pacman:
-        name: podman
-        state: present
-
 
     - name: Ensure support for rootless Podman
       become: false
