@@ -71,12 +71,23 @@
         - { regexp: '^events_logger\s*=.*$', line: 'events_logger = "file"' }
         - { regexp: '^log_driver\s*=.*$', line: 'log_driver = "k8s-file"' }
 
-    - name: Establecer usuario predeterminado en WSL
-      copy:
-        dest: /etc/wsl.conf
-        content: |
-          [user]
-          default={{ new_username }}
+    - name: Configurar usuario predeterminado en WSL (wsl.conf)
+      ini_file:
+        path: /etc/wsl.conf
+        section: user
+        option: default
+        value: "{{ new_username }}"
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Ejecutar mount --make-rshared / al arrancar WSL (wsl.conf)
+      ini_file:
+        path: /etc/wsl.conf
+        section: boot
+        option: command
+        # Escribimos literalmente: command="mount --make-rshared /"
+        value: '"mount --make-rshared /"'
         owner: root
         group: root
         mode: '0644'
@@ -114,6 +125,17 @@
               fi
             fi
           fi
+
+    - name: Dar SUID a newuidmap/newgidmap para rootless Podman
+      file:
+        path: "{{ item }}"
+        owner: root
+        group: root
+        mode: '04755'
+        state: file
+      loop:
+        - /usr/bin/newuidmap
+        - /usr/bin/newgidmap
 
 
 
